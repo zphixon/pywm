@@ -2,6 +2,7 @@
 
 #include <assert.h>
 #include <stdlib.h>
+#include <float.h>
 #include <wlr/types/wlr_data_device.h>
 #include <wlr/types/wlr_primary_selection.h>
 #include <wlr/util/log.h>
@@ -285,6 +286,7 @@ void wm_seat_dispatch_button(struct wm_seat* seat, struct wlr_event_pointer_butt
         seat->seatop_down.active = false;
     }
 }
+
 void wm_seat_dispatch_axis(struct wm_seat* seat, struct wlr_event_pointer_axis* event){
     struct wlr_surface* surface;
     double sx;
@@ -292,6 +294,14 @@ void wm_seat_dispatch_axis(struct wm_seat* seat, struct wlr_event_pointer_axis* 
     wm_server_surface_at(seat->wm_server, seat->wm_cursor->wlr_cursor->x, seat->wm_cursor->wlr_cursor->y, &surface, &sx, &sy, NULL, NULL);
     wm_seat_focus_surface(seat, surface);
 
-    wlr_seat_pointer_notify_axis(seat->wlr_seat,
-            event->time_msec, event->orientation, event->delta, event->delta_discrete, event->source);
+    struct wm_config* config = get_wm()->server->wm_config;
+
+    wlr_seat_pointer_notify_axis(
+        seat->wlr_seat,
+        event->time_msec,
+        event->orientation,
+        config->scroll_factor * event->delta,
+        round(config->scroll_factor * event->delta_discrete),
+        event->source
+    );
 }

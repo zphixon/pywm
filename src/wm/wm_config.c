@@ -22,6 +22,7 @@ void wm_config_init_default(struct wm_config* config){
 
     config->natural_scroll = true;
     config->tap_to_click = true;
+    config->scroll_factor = 1.0;
 
     config->focus_follows_mouse = true;
     config->constrain_popups_to_toplevel = false;

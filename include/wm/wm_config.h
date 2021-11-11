@@ -24,6 +24,7 @@ struct wm_config {
 
     bool tap_to_click;
     bool natural_scroll;
+    float scroll_factor;
 
     bool focus_follows_mouse;
     bool constrain_popups_to_toplevel;

@@ -95,6 +95,14 @@ static PyObject* _pywm_run(PyObject* self, PyObject* args, PyObject* kwargs){
 
         o = PyDict_GetItemString(kwargs, "tap_to_click"); if(o){ conf.tap_to_click = o == Py_True; }
         o = PyDict_GetItemString(kwargs, "natural_scroll"); if(o){ conf.natural_scroll = o == Py_True; }
+        o = PyDict_GetItemString(kwargs, "scroll_factor");
+        if(o){
+            double scroll_factor = PyFloat_AsDouble(o);
+            // TODO error checking for all of these?
+            if (PyErr_Occurred() == NULL) {
+                conf.scroll_factor = scroll_factor;
+            }
+        }
 
         o = PyDict_GetItemString(kwargs, "focus_follows_mouse"); if(o){ conf.focus_follows_mouse = o == Py_True; }
         o = PyDict_GetItemString(kwargs, "constrain_popups_to_toplevel"); if(o){ conf.constrain_popups_to_toplevel = o == Py_True; }
